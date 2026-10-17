@@ -1,0 +1,47 @@
+.main {
+    height: 400px;
+    width: 400px;
+    background-color: blue;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    top: 250px;
+    left: 600px;
+}
+
+.cube {
+    color: red;
+    margin-bottom: 60px;
+    margin-left: 100px;
+}
+
+.description {
+    color: aqua;
+    margin-bottom: 40px;
+    margin-left: 40px;
+}
+
+.price {
+    color: green;
+    margin-left: 150px;
+    font-size: 60px;
+}
+
+.cart {
+    border: none;
+    border-radius: 10px;
+    height: 45px;
+    margin-left: 150px;
+    background-color: black;
+    color: white;
+}
+
+.alt {
+    position: absolute;
+    bottom: 600px;
+    right: 950px;
+}
+.pr {
+    color: red;
+    font-family: Arial, Helvetica, sans-serif;
+}

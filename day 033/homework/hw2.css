@@ -1,0 +1,10 @@
+.profile {
+    position: relative;
+    height: 300px;
+    width: 300px;
+    background-color: blue;
+    padding: 20px;
+    font-size: 60px;
+    top: 30px;
+    left: 40px;
+}

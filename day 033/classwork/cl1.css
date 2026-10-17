@@ -1,0 +1,23 @@
+.first {
+    background-color: blue;
+    height: 300px;
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.main {
+    position: static;
+}
+
+.second {
+    background-color: red;
+    height: 300px;
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.third {
+    background-color: yellow;
+    height: 300px;
+    width: 300px;
+}

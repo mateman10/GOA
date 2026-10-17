@@ -1,0 +1,44 @@
+<!--1. შექმენი პროფილის პარამეტრები (Preferences)
+
+შექმენი HTML ფაილი და დაამატე <form>.
+
+დაამატე <fieldset> თეგი, სადაც <legend>-ში ეწერება: Profile Preferences.
+
+ჯგუფის შიგნით დაამატე:
+
+- <input> ფერის ასარჩევად type="color" ატრიბუტით. საწყის ფერად (value) მიუთითე #3498db.
+- <input> შეტყობინებების ხმის დასარეგულირებლად type="range" ატრიბუტით. მიუთითე min="0", max="100" და step="5".
+- <input> ქალაქის ჩასაწერად, რომელსაც დაუკავშირებ <datalist> თეგს.
+- <datalist>-ში დაამატე 3 option: Tbilisi, Kutaisi, Batumi.
+- input-ში დაამატე placeholder="Type or select city...".
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>Profile Preferences.</legend>
+            <input type="color" value="#3498db" name="color" id="color">
+            <br><br>
+            <input type="range" value="50" min="0" max="100" step="5" name="voice">
+            <br><br>
+            <label for="city">type a city:</label>
+            <input type="text" id="city" name="city" placeholder="type or select city...">
+            <br><br>
+            <datalist id="city">
+                <option value="tbilisi"></option>
+                <option value="kutaisi"></option>
+                <option value="batumi"></option>
+                
+            </datalist>
+        </fieldset>
+    </form>
+</body>
+</html>

@@ -1,0 +1,10 @@
+.first {
+    position: absolute;
+    left: 1550px;
+}
+
+.second {
+    position: absolute;
+    top: 880px;
+    left: 1550px;
+}

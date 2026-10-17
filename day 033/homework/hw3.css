@@ -1,0 +1,10 @@
+.child {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    background-color: red;
+    padding: 20px;
+    font-size: 60px;
+    
+}
+

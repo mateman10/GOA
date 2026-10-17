@@ -1,0 +1,26 @@
+.first {
+    background-color: red;
+    height: 300px;
+    width: 300px;
+    padding: 25px;
+    font-size: 90px;
+    position: absolute;
+    left: 400px;
+}
+
+.second {
+    position: absolute;
+    left: 750px;
+    
+    background-color: blue;
+    height: 300px;
+    width: 300px;
+    padding: 25px;
+    font-size: 80px;
+}
+
+.main {
+    position: absolute;
+
+}
+

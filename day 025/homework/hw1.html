@@ -1,0 +1,75 @@
+<!--1. შექმენი პროფილის პარამეტრები (Preferences)
+
+შექმენი HTML ფაილი და დაამატე <form>.
+
+დაამატე <fieldset> თეგი, სადაც <legend>-ში ეწერება: Profile Preferences.
+
+ჯგუფის შიგნით დაამატე:
+
+- <input> ფერის ასარჩევად type="color" ატრიბუტით. საწყის ფერად (value) მიუთითე #3498db.
+- <input> შეტყობინებების ხმის დასარეგულირებლად type="range" ატრიბუტით. მიუთითე min="0", max="100" და step="5".
+- <input> ქალაქის ჩასაწერად, რომელსაც დაუკავშირებ <datalist> თეგს.
+- <datalist>-ში დაამატე 3 option: Tbilisi, Kutaisi, Batumi.
+- input-ში დაამატე placeholder="Type or select city...".
+-->
+
+<!--2. შექმენი ანგარიშის მონაცემები (Account Details)
+
+შექმენი მეორე <fieldset> თეგი, სადაც <legend>-ში ეწერება: Account Details.
+
+ჯგუფის შიგნით დაამატე:
+
+- <input> მომხმარებლის როლისთვის. value ატრიბუტში ჩაუწერე Student და გახადე readonly.
+- <input> პრომო კოდისთვის. value ატრიბუტში ჩაუწერე NOT_ACTIVE და გახადე disabled.
+- <input> Username-ის შესაყვანად. ველი უნდა იყოს აუცილებლად შესავსები (required). მინიმალური სიგრძე minlength="3", მაქსიმალური სიგრძე maxlength="15".
+- <input> უსაფრთხოების კოდისთვის (Security PIN). გამოიყენე pattern="[0-9]{4}", დაამატე title="Enter 4-digit PIN" და გახადე required.-->
+
+<!--3. ფორმის გაგზავნა
+
+ფორმაში ბოლოში დაამატე button ტექსტით: Save Settings.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>Profile Preferences</legend>
+            <label for="color">choose a colour: </label>
+            <input type="color" name="color" id="color" value="#3498db">
+            <br><br>
+            <label for="voice">choose voice references:</label>
+            <input type="range" name="voice" id="voice" min="0" max="100" step="5">
+            <br><br>
+            <input type="text" name="city" placeholder="type or select city..." list="city">
+            <datalist id="city">
+                <option value="tbilisi"></option>
+                <option value="kutaisi"></option>
+                <option value="batumi"></option>
+            </datalist>
+        </fieldset>
+
+
+        <fieldset>
+            <legend>Account Details</legend>
+            <label for="member role">member role:</label>
+            <input type="text" readonly id="member role" name="member role" value="Student">
+            <br><br>
+            <label for="promocode">promocode status:</label>
+            <input type="text" disabled value="NOT_ACTIVE">
+            <br><br>
+            <label for="username">Username</label>
+            <input type="text" required placeholder="type a username..." minlength="3" maxlength="15" id="username" name="username">
+            <br><br>
+            <label for="security pin">security pin</label>
+            <input type="password" pattern="[0-9]{4}" title="Enter 4-digit PIN" required name="security pin" id="security pin">
+            <br><br>
+            <button>Save Settings</button>
+        </fieldset>
+
+    </form>
+</body>
+</html>

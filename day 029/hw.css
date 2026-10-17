@@ -1,0 +1,43 @@
+div {
+    height: 320px;
+    width: 400px;
+    background-color: lightgray;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+ 
+
+
+h1 {
+    color: darkblue;
+    font-size: 24px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+}
+
+h2 {
+    font-size: 16px;
+    color:  gray
+    
+}
+
+#price {
+    color: green;
+    font-size: 75px;
+    padding-left: 20px;
+    font-family: 'Courier New', Courier, monospace;
+
+
+}
+
+button {
+    background-color:blue ;
+    color: white;
+    border-radius: 10px;
+    height: 65px;
+    width: 155px;
+    font-size: 24px;
+   margin-left: 120px;
+    
+}

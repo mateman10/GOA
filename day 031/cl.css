@@ -1,0 +1,55 @@
+#a {
+    display: block;
+    background-color: blue;
+    height: 300px;
+    width: 300px;
+    border-radius: 10px;
+    
+}
+
+#b {
+    display: block;
+    background-color: rgb(255, 0, 0);
+    height: 400px;
+    width: 400px;
+    border-radius: 20px
+}
+
+#c {
+    display: block;
+    background-color: rgb(255, 132, 0);
+    height: 200px;
+    width: 200px;
+    border-radius: 30px;
+}
+
+#e {
+    display: inline;
+    color: blue;
+    background-color: brown;
+    width: 40px;
+    height: 40px;
+}
+
+#f {
+     display: inline;
+    color: rgb(217, 255, 0);
+    background-color: rgb(42, 106, 165);
+    width: 70px;
+    height: 70px;
+}
+#g {
+     display: inline;
+    color: rgb(255, 0, 200);
+    background-color: rgb(42, 165, 52);
+    width: 100px;
+    height: 100px;
+}
+
+#h {
+     display: inline;
+    color: blue;
+    background-color: rgb(42, 63, 165);
+    width: 150px;
+    height: 150px;
+}

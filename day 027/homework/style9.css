@@ -1,0 +1,10 @@
+/*9) შექმენი p თეგი და მიეცი უკანა ფონის ფერი lightblue, ტექსტის ფერი black და border 2px solid blue. გამოიყენე ექსტერნალ CSS. */
+
+p {
+    background-color: lightblue;
+    color: black;
+    border: 2px solid blue;
+}
+
+
+
