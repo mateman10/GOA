@@ -1,11 +1,5 @@
 
 
-# age = int(input("type ur age: "))
-
-# if age >= 18:
-#     print("სრულწლოვანი ხარ")
-# else:
-#     print('არხარ სრულწლოვანი')
 
 number = 20
 user = int(input("type ur number: "))
