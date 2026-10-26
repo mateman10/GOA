@@ -1,6 +1,6 @@
 import streamlit as st
 import sqlite3
-import bcrypt
+import hashlib
 import re
 import pandas as pd
 import anthropic
@@ -174,10 +174,11 @@ if not st.session_state.logged_in:
         login_email = st.text_input("ელ-ფოსტა", key="login_email")
         login_pass = st.text_input("პაროლი", type="password", key="login_pass")
         if st.button("შესვლა"):
+            hashed_input = hashlib.sha256(login_pass.encode('utf-8')).hexdigest()
             c = conn.cursor()
             c.execute("SELECT password_hash, role FROM users WHERE email = ?", (login_email,))
             user_data = c.fetchone()
-            if user_data and bcrypt.checkpw(login_pass.encode('utf-8'), user_data[0]):
+            if user_data and user_data[0] == hashed_input:
                 st.session_state.logged_in = True
                 st.session_state.user = login_email
                 st.session_state.role = user_data[1]
@@ -192,7 +193,7 @@ if not st.session_state.logged_in:
         reg_role = st.selectbox("როლი", ["მომხმარებელი", "ადმინისტრატორი"], key="reg_role")
         if st.button("რეგისტრაცია"):
             if reg_email and reg_pass:
-                hashed_pass = bcrypt.hashpw(reg_pass.encode('utf-8'), bcrypt.gensalt())
+                hashed_pass = hashlib.sha256(reg_pass.encode('utf-8')).hexdigest()
                 try:
                     c = conn.cursor()
                     c.execute("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)", 
