@@ -1,18 +1,14 @@
 import streamlit as st
 import sqlite3
-import hashlib
+import bcrypt
 import re
 import pandas as pd
 import anthropic
 
 # -----------------------------------------------------------------------------
-# ANTHROPIC CLAUDE API CONFIGURATION (უსაფრთხო მიბმა Streamlit Secrets-იდან)
+# ANTHROPIC CLAUDE API CONFIGURATION
 # -----------------------------------------------------------------------------
-try:
-    API_KEY = st.secrets["ANTHROPIC_API_KEY"]
-except Exception:
-    API_KEY = ""  # ფოლბექი ლოკალური ტესტირებისთვის
-
+API_KEY = "sk-ant-usr-1Ae2C_YuaHAPBkhp1FUyJmDskhgdK6skmj45A1BN6rJ9JGuWxBQdwhRu3z3R1A8me9u6PRKDRutbx5PD6tLyAnNyCGAAA"  # შენი API გასაღები
 client = anthropic.Anthropic(api_key=API_KEY)
 
 # -----------------------------------------------------------------------------
@@ -161,76 +157,231 @@ if 'auth_mode' not in st.session_state:
     st.session_state.auth_mode = "შესვლა"
 
 # -----------------------------------------------------------------------------
-# AUTHENTICATION SCREEN & MAIN APP LOGIC
+# AUTHENTICATION SCREEN
 # -----------------------------------------------------------------------------
-st.title("🛡️ EduAudit AI")
+def validate_email(email):
+    return re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email)
+
+def validate_password(password):
+    return len(password) >= 8 and any(c.isupper() for c in password)
 
 if not st.session_state.logged_in:
-    st.markdown('<div class="gemini-card">', unsafe_allow_html=True)
-    tab1, tab2 = st.tabs(["შესვლა", "რეგისტრაცია"])
+    st.markdown("<h1 style='text-align: center; color: #ffffff; font-weight: 800; margin-top: 20px;'>🛡️ EduAudit AI</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9aa0a6; margin-bottom: 25px; font-size: 14px;'>Enterprise-Grade Secure Document & Compliance Auditor</p>", unsafe_allow_html=True)
     
-    with tab1:
-        st.subheader("ავტორიზაცია")
-        login_email = st.text_input("ელ-ფოსტა", key="login_email")
-        login_pass = st.text_input("პაროლი", type="password", key="login_pass")
-        if st.button("შესვლა"):
-            hashed_input = hashlib.sha256(login_pass.encode('utf-8')).hexdigest()
-            c = conn.cursor()
-            c.execute("SELECT password_hash, role FROM users WHERE email = ?", (login_email,))
-            user_data = c.fetchone()
-            if user_data and user_data[0] == hashed_input:
-                st.session_state.logged_in = True
-                st.session_state.user = login_email
-                st.session_state.role = user_data[1]
-                st.rerun()
-            else:
-                st.error("არასწორი ელ-ფოსტა ან პაროლი!")
-    
-    with tab2:
-        st.subheader("რეგისტრაცია")
-        reg_email = st.text_input("ელ-ფოსტა", key="reg_email")
-        reg_pass = st.text_input("პაროლი", type="password", key="reg_pass")
-        reg_role = st.selectbox("როლი", ["მომხმარებელი", "ადმინისტრატორი"], key="reg_role")
-        if st.button("რეგისტრაცია"):
-            if reg_email and reg_pass:
-                hashed_pass = hashlib.sha256(reg_pass.encode('utf-8')).hexdigest()
-                try:
-                    c = conn.cursor()
-                    c.execute("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)", 
-                              (reg_email, hashed_pass, reg_role))
-                    conn.commit()
-                    st.success("რეგისტრაცია წარმატებით დასრულდა! გადადით შესვლის ტაბზე.")
-                except sqlite3.IntegrityError:
-                    st.error("ეს ელ-ფოსტა უკვე დაკავებულია!")
-            else:
-                st.error("გთხოვთ შეავსოთ ყველა ველი!")
-    st.markdown('</div>', unsafe_allow_html=True)
-else:
-    st.markdown(f'<div class="gemini-card">მოგესალმებით, <b>{st.session_state.user}</b> ({st.session_state.role})</div>', unsafe_allow_html=True)
-    
-    if st.button("გასვლა"):
-        st.session_state.logged_in = False
-        st.session_state.user = None
-        st.session_state.role = None
-        st.rerun()
+    col1, col2, col3 = st.columns([0.1, 2.8, 0.1])
+    with col2:
+        st.markdown('<div class="gemini-card">', unsafe_allow_html=True)
         
-    st.markdown('<div class="gemini-card">', unsafe_allow_html=True)
-    st.subheader("AI ასისტენტი (Claude)")
-    user_prompt = st.text_area("შეკითხვა ან დავალება AI-ს:", key="ai_prompt")
-    if st.button("გაგზავნა"):
-        if user_prompt and API_KEY:
-            try:
-                response = client.messages.create(
-                    model="claude-3-5-sonnet-20241022",
-                    max_tokens=1000,
-                    messages=[{"role": "user", "content": user_prompt}]
-                )
-                ai_reply = response.content[0].text
-                st.markdown(f'<div class="chat-bubble-ai"><b>Claude AI:</b><br>{ai_reply}</div>', unsafe_allow_html=True)
-            except Exception as e:
-                st.error(f"შეცდომა API-სთან დაკავშირებისას: {e}")
-        elif not API_KEY:
-            st.warning("API გასაღები არ არის მითითებული Streamlit Secrets-ში!")
+        t1, t2 = st.columns(2)
+        with t1:
+            if st.button("🔑 შესვლა", use_container_width=True):
+                st.session_state.auth_mode = "შესვლა"
+                st.rerun()
+        with t2:
+            if st.button("📝 რეგისტრაცია", use_container_width=True):
+                st.session_state.auth_mode = "რეგისტრაცია"
+                st.rerun()
+        
+        st.markdown("<hr style='border-color: #333537; margin: 15px 0;'>", unsafe_allow_html=True)
+        st.markdown(f"<p style='text-align: center; color: #8ab4f8; font-size: 13px; font-weight: 600;'>რეჟიმი: {st.session_state.auth_mode}</p>", unsafe_allow_html=True)
+
+        email = st.text_input("ელფოსტა", placeholder="name@example.com")
+        password = st.text_input("პაროლი", type="password", placeholder="მინ. 8 სიმბოლო, 1 დიდი ასო")
+        
+        if st.session_state.auth_mode == "რეგისტრაცია":
+            if st.button("ანგარიშის შექმნა", use_container_width=True):
+                if not validate_email(email):
+                    st.error("არასწორი ელფოსტის ფორმატი.")
+                elif not validate_password(password):
+                    st.error("პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო და შეიცავდეს 1 დიდ ასოს.")
+                else:
+                    try:
+                        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                        c = conn.cursor()
+                        c.execute("SELECT COUNT(*) FROM users")
+                        user_count = c.fetchone()[0]
+                        
+                        role = "ADMIN" if (user_count == 0 or email == "mmanagadze123@gmail.com") else "USER"
+                        
+                        c.execute("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)", (email, hashed, role))
+                        conn.commit()
+                        st.success("რეგისტრაცია წარმატებულია! შეგიძლიათ შეხვიდეთ.")
+                    except sqlite3.IntegrityError:
+                        st.error("ეს ელფოსტა უკვე დაკავებულია.")
         else:
-            st.warning("გთხოვთ შეიყვანოთ შეკითხვა!")
-    st.markdown('</div>', unsafe_allow_html=True)
+            if st.button("შესვლა", use_container_width=True):
+                c = conn.cursor()
+                c.execute("SELECT password_hash, role FROM users WHERE email = ?", (email,))
+                res = c.fetchone()
+                
+                login_success = False
+                if res:
+                    stored_hash = res[0]
+                    if isinstance(stored_hash, str):
+                        stored_hash = stored_hash.encode('utf-8')
+                    if bcrypt.checkpw(password.encode('utf-8'), stored_hash):
+                        login_success = True
+
+                if res and login_success:
+                    st.session_state.logged_in = True
+                    st.session_state.user = email
+                    st.session_state.role = res[1]
+                    st.rerun()
+                else:
+                    st.error("არასწორი ელფოსტა ან პაროლი.")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# -----------------------------------------------------------------------------
+# MAIN CHAT / WORKSPACE INTERFACE
+# -----------------------------------------------------------------------------
+else:
+    col_a, col_b = st.columns([3, 1])
+    with col_a:
+        st.markdown("### 🛡️ EduAudit Workspace")
+        role_badge = "👑 ადმინისტრატორი" if st.session_state.role == "ADMIN" else "👤 მომხმარებელი"
+        st.markdown(f"<span style='color: #9aa0a6; font-size: 13px;'>მომხმარებელი: <b>{st.session_state.user}</b> ({role_badge})</span>", unsafe_allow_html=True)
+    with col_b:
+        st.markdown("<div style='text-align: right;'>", unsafe_allow_html=True)
+        if st.button("🚪 გასვლა"):
+            st.session_state.logged_in = False
+            st.session_state.user = None
+            st.session_state.role = None
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Navigation tabs if ADMIN
+    if st.session_state.role == "ADMIN":
+        app_mode = st.radio("Navigation", ["workspace", "admin"], format_func=lambda x: "📁 სამუშაო სივრცე" if x == "workspace" else "📊 ადმინისტრატორის პანელი", horizontal=True, label_visibility="collapsed")
+    else:
+        app_mode = "workspace"
+
+    st.markdown("<hr style='border-color: #333537; margin: 15px 0;'>", unsafe_allow_html=True)
+
+    if app_mode == "workspace":
+        st.markdown('<div class="gemini-card" style="margin-top: 5px;">', unsafe_allow_html=True)
+        st.markdown("""
+            <div style='display: flex; align-items: center; gap: 10px; margin-bottom: 15px;'>
+                <span style='font-size: 24px;'>📁</span>
+                <h3 style='margin: 0; color: #f3f4f6; font-size: 20px;'>დოკუმენტის ატვირთვა და ანალიზი</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        uploaded_file = st.file_uploader("📂 Drag and drop or browse... (TXT, MD, CSV)", type=["txt", "md", "csv"])
+        
+        if uploaded_file:
+            st.markdown(f"<p style='color: #1f2937; font-size: 13px; margin-top: 5px; background: #e5e7eb; padding: 6px; border-radius: 6px;'>არჩეულია ფაილი: <b>{uploaded_file.name}</b></p>", unsafe_allow_html=True)
+
+        user_prompt = st.text_area("შეტყობინება AI-სთვის", placeholder="შეიყვანეთ დავალება (მაგ: ამოიღე ყველა კონფიდენციალური მონაცემი...)", height=90)
+
+        if st.button("✨ ანალიზის გაშვება"):
+            try:
+                file_content = ""
+                if uploaded_file is not None:
+                    try:
+                        file_content = uploaded_file.getvalue().decode("utf-8")
+                    except:
+                        file_content = "Binary or non-utf8 file uploaded."
+                
+                full_input = f"{user_prompt}\n\nDocument Content:\n{file_content}"
+                
+                with st.spinner("Claude ამუშავებს მონაცემებს..."):
+                    message = client.messages.create(
+                        model="claude-opus-5-5",
+                        max_tokens=2048,
+                        messages=[
+                            {"role": "user", "content": full_input}
+                        ]
+                    )
+                    # ფიქსი ThinkingBlock-ისთვის
+                    answer = next(block.text for block in message.content if hasattr(block, 'text'))
+                    
+                    c = conn.cursor()
+                    c.execute("INSERT INTO history (username, prompt, response) VALUES (?, ?, ?)", 
+                              (st.session_state.user, full_input, answer))
+                    conn.commit()
+                    
+                    st.markdown("### 📊 პასუხი:")
+                    st.markdown(f"<div class='chat-bubble-ai'>{answer}</div>", unsafe_allow_html=True)
+                    
+            except Exception as e:
+                st.error(f"შეცდომა API-სთან დაკავშირებით: {e}")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown("### 🕒 ძველი ანალიზების ისტორია")
+        c = conn.cursor()
+        c.execute("SELECT prompt, response, timestamp FROM history WHERE username = ? ORDER BY timestamp DESC LIMIT 5", (st.session_state.user,))
+        history = c.fetchall()
+        
+        if history:
+            for h in history:
+                st.markdown(f"<div class='chat-bubble-user'><b>შეკითხვა:</b> {h[0][:120]}...<br><small style='color: #9aa0a6;'>დრო: {h[2]}</small></div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='chat-bubble-ai'><b>AI პასუხი:</b> {h[1][:400]}...</div>", unsafe_allow_html=True)
+        else:
+            st.info("ისტორია ჯერ ცარიელია.")
+
+    elif app_mode == "admin":
+        st.markdown("### 📊 ადმინისტრატორის მართვის პანელი")
+        st.markdown("<p style='color: #9aa0a6; font-size: 14px;'>სისტემის ზოგადი სტატისტიკა და მომხმარებელთა მონაცემები</p>", unsafe_allow_html=True)
+
+        c = conn.cursor()
+        
+        c.execute("SELECT COUNT(*) FROM users")
+        total_users = c.fetchone()[0]
+        
+        c.execute("SELECT COUNT(*) FROM history")
+        total_queries = c.fetchone()[0]
+
+        m1, m2 = st.columns(2)
+        with m1:
+            st.markdown(f"""
+                <div class='gemini-card' style='text-align: center;'>
+                    <h4 style='color: #9aa0a6; margin: 0;'>სულ მომხმარებელი</h4>
+                    <h2 style='color: #8ab4f8; margin: 10px 0 0 0;'>{total_users}</h2>
+                </div>
+            """, unsafe_allow_html=True)
+        with m2:
+            st.markdown(f"""
+                <div class='gemini-card' style='text-align: center;'>
+                    <h4 style='color: #9aa0a6; margin: 0;'>სულ გაგზავნილი ანალიზი</h4>
+                    <h2 style='color: #8ab4f8; margin: 10px 0 0 0;'>{total_queries}</h2>
+                </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("#### 👑 მომხმარებლისთვის ადმინის უფლების მინიჭება")
+        st.markdown("<p style='color: #9aa0a6; font-size: 13px;'>ჩაწერეთ მომხმარებლის ზუსტი ელფოსტა და მიანიჭეთ ადმინისტრატორის სტატუსი:</p>", unsafe_allow_html=True)
+        
+        target_promote_email = st.text_input("მომხმარებლის ელფოსტა", placeholder="user@example.com", key="promote_email_input")
+        if st.button("მივანიჭო ADMIN სტატუსი"):
+            if target_promote_email:
+                c.execute("SELECT * FROM users WHERE email = ?", (target_promote_email,))
+                user_exists = c.fetchone()
+                if user_exists:
+                    c.execute("UPDATE users SET role = 'ADMIN' WHERE email = ?", (target_promote_email,))
+                    conn.commit()
+                    st.success(f"მომხმარებელი ({target_promote_email}) წარმატებით გახდა ადმინისტრატორი!")
+                else:
+                    st.error("ასეთი ელფოსტით მომხმარებელი ბაზაში არ მოიძებნა.")
+            else:
+                st.warning("გთხოვთ ჩაწეროთ ელფოსტა.")
+
+        st.markdown("<hr style='border-color: #333537; margin: 20px 0;'>", unsafe_allow_html=True)
+
+        st.markdown("#### 👥 რეგისტრირებული მომხმარებლები")
+        c.execute("SELECT id, email, role, created_at FROM users ORDER BY created_at DESC")
+        users_data = c.fetchall()
+        if users_data:
+            users_df = pd.DataFrame(users_data, columns=["ID", "ელფოსტა", "როლი", "რეგისტრაციის დრო"])
+            st.dataframe(users_df, use_container_width=True)
+        else:
+            st.info("მომხმარებლები არ მოიძებნა.")
+
+        st.markdown("#### 📜 სისტემის სრული ისტორია (ყველა მომხმარებელი)")
+        c.execute("SELECT username, prompt, response, timestamp FROM history ORDER BY timestamp DESC LIMIT 20")
+        all_history = c.fetchall()
+        if all_history:
+            for ah in all_history:
+                st.markdown(f"<div class='chat-bubble-user'><b>მომხმარებელი:</b> {ah[0]}<br><b>შეკითხვა:</b> {ah[1][:150]}...<br><small style='color: #9aa0a6;'>დრო: {ah[3]}</small></div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='chat-bubble-ai'><b>AI პასუხი:</b> {ah[2][:300]}...</div>", unsafe_allow_html=True)
+        else:
+            st.info("ისტორია ჯერ ცარიელია.")
