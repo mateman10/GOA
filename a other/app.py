@@ -8,7 +8,7 @@ import anthropic
 # -----------------------------------------------------------------------------
 # ANTHROPIC CLAUDE API CONFIGURATION
 # -----------------------------------------------------------------------------
-API_KEY = "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"  # აქ ჩასვი შენი Claude API გასაღები
+API_KEY = ""  # აქ ჩასვი შენი Claude API გასაღები
 client = anthropic.Anthropic(api_key=API_KEY)
 
 # -----------------------------------------------------------------------------
