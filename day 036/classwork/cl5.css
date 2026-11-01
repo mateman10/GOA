@@ -1,0 +1,11 @@
+.parent {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.child {
+    height: 400px;
+    width: 300px;
+    background-color: blue;
+}

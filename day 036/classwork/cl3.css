@@ -1,0 +1,29 @@
+.parent {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: red;
+}
+
+.card {
+    width: 120px;
+    background-color: blue;
+    color: lightblue;
+    text-align: center;
+    padding: 20px;
+}
+
+.card1 {
+    height: 80px;
+}
+
+.card2 {
+    height: 120px;
+}
+
+.card3 {
+    height: 160px;
+}
+

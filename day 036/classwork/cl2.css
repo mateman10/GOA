@@ -1,0 +1,11 @@
+.parent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.child {
+    background: rgb(255, 0, 0);
+    height: 300px;
+    width: 300px;
+    margin: 10px;
+}

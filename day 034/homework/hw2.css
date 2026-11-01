@@ -1,0 +1,61 @@
+
+.profile_card {
+    position: relative; 
+    width: 320px;
+    background-color: #ffffff;
+    padding: 25px;
+    margin: 50px auto;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid #eaeaea;
+}
+
+
+.img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+
+.online_dot {
+    position: absolute;
+    top: 25px;   
+    right: 105px; 
+    width: 16px;
+    height: 16px;
+    background-color: #2ecc71; 
+    border-radius: 50%;
+    border: 2px solid #ffffff; 
+}
+
+
+.pro {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: #3498db;
+    color: white;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin-left: 100px;
+}
+
+
+.profile_card {
+    color: #333;
+}
+
+.profession {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #555;
+    font-size: 13px;
+    margin-bottom: 40px;
+}

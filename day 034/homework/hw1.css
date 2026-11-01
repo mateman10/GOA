@@ -1,0 +1,81 @@
+/* 1. შექმენით ვებგვერდი, რომელზეც განთავსებული იქნება 5 სხვადასხვა სექცია. 
+თითოეულ სექციას ჰქონდეს სათაური, აღწერა, ფონის ფერი, padding,
+margin და border-radius. პირველ სექციას მიანიჭეთ position: static, 
+მეორე და მესამე სექციებს კი position: relative. top, left, right და bottom 
+თვისებების გამოყენებით გადაადგილეთ Relative სექციები სხვადასხვა მიმართულებით. 
+მეოთხე და მეხუთე სექციები დატოვეთ ჩვეულებრივ პოზიციაზე. დააკვირდით,
+როგორ მოქმედებს Relative პოზიციონირება სხვა ელემენტების განლაგებაზე.
+დამატებით გამოიყენეთ box-shadow და border. */
+
+
+
+.welcome {
+    position: static;
+    background-color: blue;
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px red;
+}
+
+
+.programming {
+    position: relative;
+    background-color: rgb(15, 222, 57);
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px rgb(33, 159, 213);
+    left: 400px;
+    top: 200px;
+}
+
+
+.gaming {
+    position: relative;
+    background-color: rgba(100, 21, 50, 0.34);
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px rgb(148, 149, 121);
+    left: 900px;
+    bottom: 140px;
+}
+
+
+.hobby {
+    background-color: rgba(31, 182, 195, 0.34);
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin-top: 100px;
+    margin-left: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px rgb(233, 241, 16);
+}
+
+.contacts {
+    background-color: rgb(202, 99, 15);
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin-top: 100px;
+    margin-left: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px rgb(96, 4, 112);
+}
+
+.h1 {
+    color: red;
+    margin-bottom: 70px;
+}
+
+.description {
+    color: brown;
+}

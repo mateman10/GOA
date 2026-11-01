@@ -1,0 +1,28 @@
+.parent {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+
+.child {
+    margin: 20px;
+    width: 250px;
+    height: 250px;
+}
+
+.child1 {
+    background-color: red;
+}
+
+.child2 {
+    background-color: blue;
+}
+
+.child3 {
+    background-color: yellow;
+}
+
+.child4 {
+    background-color: green;
+}
