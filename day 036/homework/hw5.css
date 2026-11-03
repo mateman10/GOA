@@ -1,0 +1,19 @@
+.parent {
+    width: 750px;
+    height: 400px;
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    background-color: red;
+}
+
+.card {
+    width: 120px;
+    background-color: blue;
+    color: lightblue;
+    text-align: center;
+    padding: 20px;
+}
+
+
+
