@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+    height: 800px;
+    width: 800px;
+}
+
+.helper1 {
+    display: flex;
+    align-self: flex-start;
+}
+
+.helper2 {
+    display: flex;
+    align-self: center;
+}
+
+.helper3 {
+    display: flex;
+    align-self: flex-end;
+}
+
+.helper {
+    height: 200px;
+    width: 200px;
+    background-color: aqua;
+}

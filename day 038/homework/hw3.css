@@ -1,0 +1,35 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: black;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aquamarine;
+    height: 400px;
+    width: 400px;
+    border-radius: 15px;
+}
+
+.helper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    right: 150px;
+}
+
+.buttons {
+    height: 30px;
+    width: 80px;
+    border: none;
+    background-color: black;
+    color: white;
+}
